@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= jogo.nome %></title>
+    <link href="/dist/tailwind.css" rel="stylesheet">
+    <link href="/src/input.css" rel="stylesheet">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <%- include('partials/cabecalho')%>
+    <main>
+        <%- include('partials/central') %>
+        <!-- Nome do jogo -->
+        <div class="my-4 py-4">
+            <h1 class="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-4"><%= jogo.nome %></h1>
+        </div>
+        
+        <!-- Capa e informações -->
+        <div class="flex flex-col justify-center items-center md:items-start md:flex-row md:space-x-6">
+            <% if (jogo.imagens && jogo.imagens.length > 0) { %>
+                <div class="mb-8 flex-shrink-0">
+                    <img src="data:image/jpeg;base64,<%= jogo.imagens[0] %>" alt="Capa do Jogo" class="h-56 md:h-80 object-cover rounded-lg shadow-md">
+                </div>
+            <% } %>
+            <div class="w-full md:w-1/2 p-6 text-lg text-gray-700 bg-blue-50 rounded-lg shadow-md h-80">
+                <p class="mb-2"><strong>Ano de Lançamento:</strong> <%= jogo.ano %></p>
+                <p class="mb-2 limit-text" title="<%= Array.isArray(jogo.plataformas) ? jogo.plataformas.join(', ') : 'N/A' %>"><strong>Plataforma:</strong> <%= Array.isArray(jogo.plataformas) ? jogo.plataformas.join(', ') : 'N/A' %></p>
+                <p class="mb-2 limit-text" title="<%= Array.isArray(jogo.categorias) ? jogo.categorias.join(', ') : 'N/A' %>"><strong>Categoria:</strong> <%= Array.isArray(jogo.categorias) ? jogo.categorias.join(', ') : 'N/A' %></p>
+                <p class="mb-2 limit-text" title="<%= Array.isArray(jogo.conhecimentos) ? jogo.conhecimentos.join(', ') : 'N/A' %>"><strong>Conhecimento:</strong> <%= Array.isArray(jogo.conhecimentos) ? jogo.conhecimentos.join(', ') : 'N/A' %></p>
+                <p class="mb-2 limit-text" title="<%= Array.isArray(jogo.idiomas) ? jogo.idiomas.join(', ') : 'N/A' %>"><strong>Idioma:</strong> <%= Array.isArray(jogo.idiomas) ? jogo.idiomas.join(', ') : 'N/A' %></p>
+            </div>
+        </div>
+        
+        <!-- Descricao -->
+        <div class="py-4">
+            <p class="text-xl text-gray-700 my-4"><%- jogo.descricao.replace(/\n/g, '<br>') %></p>
+        </div>
+
+        <!-- Links Externos -->
+        <div class="py-4">
+            <% if (jogo.links && jogo.links.length > 0) { %>
+                <div>
+                    <h2 class="text-2xl font-bold mb-4">Links Externos</h2>
+                    <div class="grid grid-cols-2 gap-4 md:grid-cols-3">
+                        <% jogo.links.forEach(link => { %>
+                            <div class="p-4 bg-white shadow-md rounded-lg transform transition-transform hover:scale-105">
+                                <a href="<%= link.url %>" class="text-blue-500 hover:underline" target="_blank">
+                                    <h3 class="text-lg md:text-xl font-semibold mb-2"><%= link.title %></h3>
+                                </a>
+                            </div>
+                        <% }) %>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    
+        <!-- Screenshots -->
+        <% if (jogo.imagens && jogo.imagens.length > 1) { %>
+            <div class="py-4 mt-4 bg-gray-50 rounded-lg">
+                <h2 class="text-2xl md:text-3xl font-bold mb-4 text-center">Screenshots</h2>
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-2 pb-4">
+                    <% jogo.imagens.slice(1).forEach((imagemBase64, index) => { %>
+                        <img 
+                            src="data:image/jpeg;base64,<%= imagemBase64 %>" 
+                            alt="imagem-<%= index + 1 %>" 
+                            class="w-full h-64 object-cover rounded-lg shadow-md cursor-pointer"
+                            onclick="showImageModal('data:image/jpeg;base64,<%= imagemBase64 %>')"
+                        >
+                    <% }) %>
+                </div>
+            </div>
+        
+            <!-- Modal (Exibe a imagem quando clicado) -->
+            <div id="imageModal" class="fixed inset-0 items-center justify-center bg-black bg-opacity-75 hidden z-50">
+                <img id="modalImage" src="" alt="Imagem destacada" class="max-w-full max-h-full rounded-lg">
+                <button 
+                    onclick="closeImageModal()" 
+                    class="absolute top-4 right-4 text-white text-3xl font-bold"
+                >
+                    &times;
+                </button>
+            </div>
+        <% } %>
+
+        <!-- Jogos Relacionados -->
+        <% if(jogosRelacionados && jogosRelacionados.length > 0) { %>
+            <div class="py-4 mt-4">
+                <h2 class="text-2xl font-bold text-center">Jogos Relacionados</h2>
+                <%- include('partials/game-card', { jogos: jogosRelacionados }) %>
+            </div>
+        <%}%>
+    </main>
+    <%- include('partials/footer') %>
+    <script src="/js/utils.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduGames</title>
+    <link href="/dist/tailwind.css" rel="stylesheet">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+</head>
+<body> 
+
+    <%- include('partials/cabecalho') %>
+    <main>
+        <%- include('partials/central') %>
+        <section class="mt-2 pt-2 md:mt-4 md:pt-4 text-center"> 
+            <h1 class="py-4 mb-6 text-2xl md:text-3xl font-semibold text-gray-800">Filtrar por <%= tipoCaracteristica %></h1>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"> 
+                <% caracteristicas.forEach(function(caracteristica) { %>
+                    <div class="game-card max-w-xs bg-white shadow-lg rounded-lg overflow-hidden relative">
+                        <a href="/filtrar/<%= caracteristica.tipo %>/<%= caracteristica.slug %>?page=1&limit=9">
+                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg w-full transition duration-300 ease-in-out transform hover:scale-105">
+                                <%= caracteristica.nome %>
+                            </button>
+                        </a>
+                    </div>
+                <% }); %>
+            </div>
+        </section>
+    </main>
+
+    <%- include('partials/footer') %>
+
+    <script src="/js/utils.js"></script>
+</body>
+</html>

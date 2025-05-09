@@ -1,0 +1,36 @@
+{
+  "name": "gameshub",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "build:css": "npx tailwindcss -i ./src/input.css -o ./dist/tailwind.css --minify",
+    "watch:css": "npx tailwindcss -i ./src/input.css -o ./dist/tailwind.css --watch",
+    "start:dev": "nodemon app.js",
+    "dev": "concurrently \"npm run watch:css\" \"npm run start:dev\"",
+    "start:prod": "pm2 start app.js --name \"gameshub\" && pm2 save",
+    "stop:prod": "pm2 stop gameshub",
+    "restart:prod": "pm2 restart gameshub",
+    "logs:prod": "pm2 logs gameshub",
+    "railway": "npm run build:css && node app.js" 
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "autoprefixer": "^10.4.20",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.13.1",
+    "slugify": "^1.6.6"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.3.0",
+    "pm2": "^5.1.0",
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.0.0"
+  }
+}
